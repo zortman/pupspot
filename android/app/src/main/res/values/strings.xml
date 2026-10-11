@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">PupSpot</string>
+    <string name="title_activity_main">PupSpot</string>
+    <string name="package_name">com.pupspot.game</string>
+    <string name="custom_url_scheme">com.pupspot.game</string>
+</resources>

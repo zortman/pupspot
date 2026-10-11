@@ -1,0 +1,8 @@
+{
+  "appId": "com.pupspot.game",
+  "appName": "PupSpot",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false
+  }
+}

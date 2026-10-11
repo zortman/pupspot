@@ -1,0 +1,24 @@
+# dependencies
+node_modules/
+
+# Android build outputs
+android/app/build/
+android/build/
+android/.gradle/
+android/captures/
+android/local.properties
+android/app/release/
+
+# secrets — DO NOT COMMIT
+*.keystore
+android/keystore.properties
+KEYSTORE-INFO.txt
+
+# built binaries — distributed via GitHub Releases, not committed
+*.apk
+*.aab
+
+# misc
+.DS_Store
+*.log
+Thumbs.db
