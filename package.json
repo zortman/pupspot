@@ -4,6 +4,8 @@
   "private": true,
   "description": "PupSpot - dog puzzle game",
   "dependencies": {
+    "@capacitor-firebase/authentication": "^6.3.1",
+    "@capacitor-firebase/firestore": "^6.3.1",
     "@capacitor/android": "^6.2.1",
     "@capacitor/core": "^6.2.1"
   },

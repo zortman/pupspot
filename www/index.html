@@ -364,6 +364,8 @@ const ICON={
   speaker:(c='currentColor')=>`<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a4 4 0 0 1 0 7"/></svg>`,
   music:(c='currentColor')=>`<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>`,
   vibrate:(c='currentColor')=>`<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="4" width="8" height="16" rx="2"/><path d="M4 9v6M20 9v6"/></svg>`,
+  cloud:(c='currentColor')=>`<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .5-9 6 6 0 0 0-11.5-1.5A4 4 0 0 0 6.5 19z"/></svg>`,
+  google:()=>`<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.6-.1-1.2-.2-1.8H12v3.5h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.2z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 13.9a6 6 0 0 1 0-3.8V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 5.9c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5l3.3 2.6C7.2 7.6 9.4 5.9 12 5.9z"/></svg>`,
 };
 
 /* ---------- color utils ---------- */
@@ -578,7 +580,7 @@ function loadMeta(){let m;try{m=JSON.parse(localStorage.getItem(META_KEY));}catc
   return Object.assign({level:1,maxLevel:1,cleared:0,dogsPlaced:0,coins:150,boostUntil:0,
     dogs:['golden'],active:'golden',crates:{},cratesOpened:0,claimed:{},tutorialDone:false,
     sfx:true,music:true,vibe:true,lastDaily:null,streak:0,dailyBest:0,stars:{}},m);}
-function saveMeta(){try{localStorage.setItem(META_KEY,JSON.stringify(meta));}catch(e){}}
+function saveMeta(){try{localStorage.setItem(META_KEY,JSON.stringify(meta));}catch(e){}try{if(typeof CLOUD!=='undefined'&&CLOUD.user)CLOUD.push();}catch(e){}}
 let meta=loadMeta();
 
 /* ---------- Particle FX (background, theme-aware) ---------- */
@@ -931,12 +933,14 @@ function openSettings(){
   const row=(label,key,icon)=>`<div class="setrow" data-key="${key}"><span class="si">${icon}</span><span class="sl">${label}</span><span class="sw ${meta[key]!==false?'on':''}"><i></i></span></div>`;
   const root=$('#modal-root');
   root.innerHTML=`<div class="modal"><h2>Settings</h2>
-    <div style="margin:8px 0 2px">${row('Sound effects','sfx',ICON.speaker())}${row('Music','music',ICON.music())}${row('Vibration','vibe',ICON.vibrate())}</div>
+    <div id="authBox" style="margin:10px 0 4px">${authBoxHTML()}</div>
+    <div style="margin:4px 0 2px">${row('Sound effects','sfx',ICON.speaker())}${row('Music','music',ICON.music())}${row('Vibration','vibe',ICON.vibrate())}</div>
     <button class="btn btn-ghost" id="setHow" style="margin-top:14px;width:100%">How to play</button>
     <button class="btn btn-ghost" id="setReset" style="margin-top:10px;width:100%">Reset all progress</button>
     <button class="btn btn-primary" id="setClose" style="margin-top:14px;width:100%">Done</button></div>`;
   root.classList.add('show');
-  root.querySelectorAll('.setrow').forEach(r=>r.onclick=()=>{const k=r.dataset.key;meta[k]=(meta[k]===false);saveMeta();r.querySelector('.sw').classList.toggle('on',meta[k]!==false);AU.button();if(k==='music'){meta.music!==false?AU.startMusic():AU.stopMusic();}});
+  wireAuthBtn();
+  root.querySelectorAll('.setrow[data-key]').forEach(r=>r.onclick=()=>{const k=r.dataset.key;meta[k]=(meta[k]===false);saveMeta();r.querySelector('.sw').classList.toggle('on',meta[k]!==false);AU.button();if(k==='music'){meta.music!==false?AU.startMusic():AU.stopMusic();}});
   $('#setClose').onclick=()=>{AU.button();closeModal();};
   $('#setHow').onclick=()=>{closeModal();openTutorial();};
   $('#setReset').onclick=()=>modal({title:'Reset everything?',text:'Clears coins, pups, crates, levels and quests.',buttons:[{label:'Reset',primary:true,act:()=>{localStorage.removeItem(META_KEY);meta=loadMeta();G=null;applyTheme('default');closeModal();toast('Progress reset');goHome();refreshQuestDot();}},{label:'Cancel',act:openSettings}]});
@@ -1014,8 +1018,61 @@ function wire(){
   document.addEventListener('pointerdown',()=>{AU.ensure();AU.resume();if(meta.music!==false)AU.startMusic();},{once:true});
 }
 
+/* ---------- Cloud save + Google sign-in (Firebase, native only) ---------- */
+const CLOUD={
+  user:null,
+  avail(){try{return !!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.FirebaseAuthentication&&window.Capacitor.Plugins.FirebaseFirestore);}catch(e){return false;}},
+  auth(){return window.Capacitor.Plugins.FirebaseAuthentication;},
+  fs(){return window.Capacitor.Plugins.FirebaseFirestore;},
+  async init(){
+    if(!this.avail())return;
+    try{const r=await this.auth().getCurrentUser();this.user=(r&&r.user)||null;}catch(e){}
+    try{this.auth().addListener('authStateChange',c=>{this.user=(c&&c.user)||null;updateAuthUI();});}catch(e){}
+    if(this.user)this.pull();
+  },
+  async signIn(){
+    if(!this.avail()){toast('Sign-in works in the installed app');return;}
+    try{const r=await this.auth().signInWithGoogle();this.user=(r&&r.user)||null;
+      toast('Signed in'+(this.user&&(this.user.displayName||this.user.email)?' as '+(this.user.displayName||this.user.email):''));
+      await this.pull();updateAuthUI();AU.coin();
+    }catch(e){toast('Sign-in canceled');}
+  },
+  async signOut(){if(!this.avail())return;try{await this.auth().signOut();}catch(e){}this.user=null;toast('Signed out');updateAuthUI();},
+  ref(){return this.user?`saves/${this.user.uid}`:null;},
+  async pull(){const ref=this.ref();if(!ref)return;
+    try{const r=await this.fs().getDocument({reference:ref});const data=r&&r.snapshot&&(r.snapshot.data||r.snapshot);
+      if(data&&data.meta){mergeMeta(data.meta);saveMeta();applyTheme((dogById(meta.active)||{}).theme||'default');renderHome();refreshQuestDot();}
+    }catch(e){}
+    this.push(true);
+  },
+  _t:null,
+  push(now){const ref=this.ref();if(!ref)return;clearTimeout(this._t);
+    const go=async()=>{try{await this.fs().setDocument({reference:ref,data:{meta:JSON.parse(JSON.stringify(meta)),updated:Date.now()}});}catch(e){}};
+    if(now)go();else this._t=setTimeout(go,900);},
+};
+function mergeMeta(c){if(!c)return;
+  const mx=(a,b)=>Math.max(a||0,b||0);
+  meta.coins=mx(meta.coins,c.coins);meta.level=mx(meta.level,c.level);meta.maxLevel=mx(meta.maxLevel,c.maxLevel);
+  meta.cleared=mx(meta.cleared,c.cleared);meta.dogsPlaced=mx(meta.dogsPlaced,c.dogsPlaced);meta.cratesOpened=mx(meta.cratesOpened,c.cratesOpened);
+  meta.streak=mx(meta.streak,c.streak);meta.dailyBest=mx(meta.dailyBest,c.dailyBest);meta.boostUntil=mx(meta.boostUntil,c.boostUntil);
+  meta.dogs=Array.from(new Set([...(meta.dogs||[]),...(c.dogs||[])]));
+  const cr=Object.assign({},c.crates||{});for(const k in(meta.crates||{}))cr[k]=mx(cr[k],meta.crates[k]);meta.crates=cr;
+  meta.claimed=Object.assign({},c.claimed||{},meta.claimed||{});
+  meta.stars=Object.assign({},c.stars||{},meta.stars||{});
+  if(c.lastDaily&&(!meta.lastDaily||c.lastDaily>meta.lastDaily))meta.lastDaily=c.lastDaily;
+  if(c.tutorialDone)meta.tutorialDone=true;
+}
+function authBoxHTML(){
+  if(!CLOUD.avail())return `<div class="setrow" style="cursor:default"><span class="si">${ICON.cloud()}</span><span class="sl">Cloud save</span><span style="font-size:12px;color:var(--ink-soft)">in the app</span></div>`;
+  if(CLOUD.user){const name=CLOUD.user.displayName||CLOUD.user.email||'Signed in';
+    return `<div class="setrow" style="cursor:default"><span class="si">${ICON.cloud('var(--good)')}</span><span class="sl" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${name}</span><button class="btn btn-ghost" id="authBtn" style="padding:7px 14px;font-size:13px">Sign out</button></div>`;}
+  return `<button class="btn btn-ghost" id="authBtn" style="width:100%;margin-bottom:6px"><span style="width:20px;height:20px;display:inline-flex">${ICON.google()}</span> Sign in with Google</button>`;
+}
+function wireAuthBtn(){const b=$('#authBtn');if(!b)return;b.onclick=()=>{AU.button();if(CLOUD.user)CLOUD.signOut();else CLOUD.signIn();};}
+function updateAuthUI(){const box=$('#authBox');if(box){box.innerHTML=authBoxHTML();wireAuthBtn();}}
+
 /* ---------- Version / update check (GitHub) ---------- */
-const APP_VERSION='1.0.0',APP_VERSION_CODE=1;
+const APP_VERSION='1.1.0',APP_VERSION_CODE=2;
 const GH_REPO='zortman/PupSpot';
 const VERSION_URL=`https://raw.githubusercontent.com/${GH_REPO}/main/version.json`;
 const RELEASES_URL=`https://github.com/${GH_REPO}/releases/latest`;
@@ -1037,6 +1094,7 @@ async function checkForUpdate(){
 FX.init();paintStatic();wire();
 applyTheme((dogById(meta.active)||{}).theme||'default');
 renderHome();refreshQuestDot();
+CLOUD.init();
 if(!meta.tutorialDone)setTimeout(openTutorial,350);
 setTimeout(checkForUpdate, meta.tutorialDone?3000:7000);
 setInterval(()=>{if($('#home').classList.contains('active'))renderBoostBanner('#boostBanner');if($('#shop').classList.contains('active'))renderBoostBanner('#shopBoost');if($('#quests').classList.contains('active'))renderBoostBanner('#questBoost');},30000);

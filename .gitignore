@@ -22,3 +22,6 @@ KEYSTORE-INFO.txt
 .DS_Store
 *.log
 Thumbs.db
+
+# Firebase config (keep out of public repo)
+android/app/google-services.json
