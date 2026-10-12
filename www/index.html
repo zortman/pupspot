@@ -15,7 +15,7 @@
     --line:#f0ddc0;--line-strong:#e4c79d;--tray:#f6e6ca;
     --accent:#f6a63f;--accent-ink:#9a5400;--accent-soft:#ffe6c0;
     --teal:#36b8a6;--red:#ef6b55;--good:#4bb06a;--coin:#f5c542;
-    --shadow:0 8px 22px rgba(120,80,30,.16);--radius:20px;--nav-h:66px;--maxw:460px;
+    --shadow:0 8px 22px rgba(120,80,30,.16);--radius:20px;--nav-h:70px;--maxw:540px;--gold:#f5c542;
     font-family:'Nunito','Fredoka',system-ui,-apple-system,sans-serif;
   }
   h1,h2,h3,.btn,.badge .v,.lvl-card h3,.modal h2,.lvlbox,.foundbox,.stat-box .big,.brand h1,
@@ -23,12 +23,12 @@
     font-family:'Fredoka','Nunito',system-ui,sans-serif;}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;height:100%;}
-  body{background:var(--bg);color:var(--ink);overscroll-behavior:none;-webkit-user-select:none;user-select:none;
+  body{background:var(--bg);color:var(--ink);font-size:17px;overscroll-behavior:none;-webkit-user-select:none;user-select:none;
     transition:background .6s ease,color .4s ease;}
   #fx{position:fixed;inset:0;z-index:0;pointer-events:none;}
   #app{max-width:var(--maxw);margin:0 auto;min-height:100%;position:relative;z-index:1;
     background:linear-gradient(180deg,transparent,rgba(0,0,0,.02));display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);}
-  .screen{display:none;flex-direction:column;flex:1;padding:14px 16px calc(var(--nav-h) + 20px);animation:fade .25s ease;}
+  .screen{display:none;flex-direction:column;flex:1;padding:14px 12px calc(var(--nav-h) + 20px);animation:fade .25s ease;}
   .screen.active{display:flex;}.game-screen{padding-bottom:16px;}.game-screen.active{display:flex;}
   @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 
@@ -78,31 +78,34 @@
   .iconbtn:active{transform:scale(.94);}.iconbtn svg{width:21px;height:21px;}
   .g-mid{flex:1;display:flex;align-items:center;justify-content:space-between;gap:8px;
     background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;}
-  .hearts{display:flex;gap:3px;}.hearts svg{width:20px;height:20px;}
-  .foundbox{display:flex;align-items:center;gap:6px;font-weight:700;font-size:15px;}.foundbox svg{width:19px;height:19px;}
-  .lvlbox{font-size:12px;color:var(--ink-soft);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+  .hearts{display:flex;gap:4px;}.hearts svg{width:25px;height:25px;}
+  .foundbox{display:flex;align-items:center;gap:6px;font-weight:700;font-size:19px;}.foundbox svg{width:23px;height:23px;}
+  .lvlbox{font-size:14px;color:var(--ink-soft);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
 
-  .board-wrap{width:100%;max-width:400px;margin:4px auto 0;position:relative;}
-  #board{width:100%;aspect-ratio:1/1;display:grid;gap:2.6%;background:var(--tray);padding:3%;border-radius:24px;
-    box-shadow:var(--shadow),inset 0 2px 5px rgba(255,255,255,.3);}
-  .cell{display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;border-radius:20%;transition:transform .08s;
+  .board-wrap{width:100%;max-width:540px;margin:4px auto 0;position:relative;}
+  #board{width:100%;aspect-ratio:1/1;display:grid;gap:2.4%;background:var(--tray);padding:2.6%;border-radius:24px;
+    box-shadow:var(--shadow),inset 0 2px 5px rgba(255,255,255,.3);transition:background .4s;}
+  #board.golden{background:linear-gradient(140deg,#ffe9a8,#f3b43f);box-shadow:0 0 26px rgba(245,197,66,.5),var(--shadow);}
+  .gold-banner{text-align:center;font-weight:800;letter-spacing:1px;color:#9a6a00;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;gap:7px;font-size:15px;}
+  .gold-banner svg{width:22px;height:22px;}
+  .cell{display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;border-radius:20%;transition:transform .08s;touch-action:manipulation;
     box-shadow:inset 0 -4px 0 rgba(0,0,0,.1),inset 0 3px 0 rgba(255,255,255,.35);}
   .cell:active{transform:scale(.9);}
-  .cell.dog{padding:5%;}
+  .cell.dog{padding:3%;}
   .cell.dog svg{width:100%;height:100%;filter:drop-shadow(0 2px 2px rgba(0,0,0,.22));animation:pp .35s cubic-bezier(.2,1.4,.4,1);}
   @keyframes pp{0%{transform:scale(.2);}60%{transform:scale(1.15);}100%{transform:scale(1);}}
   .cell.dog.secret{animation:secpulse 1.6s ease-in-out infinite;}
   @keyframes secpulse{0%,100%{box-shadow:inset 0 -4px 0 rgba(0,0,0,.1),0 0 0 0 rgba(255,80,210,.0);}50%{box-shadow:inset 0 -4px 0 rgba(0,0,0,.1),0 0 16px 3px rgba(255,80,210,.6);}}
-  .cell .x{width:52%;height:52%;filter:drop-shadow(0 1.5px 1px rgba(0,0,0,.22));animation:pp .2s ease;}
+  .cell .x{width:60%;height:60%;filter:drop-shadow(0 1.5px 1px rgba(0,0,0,.22));animation:pp .2s ease;}
   .cell.wrong{animation:wr .45s;}
   @keyframes wr{0%,100%{box-shadow:inset 0 0 0 0 var(--red);}30%,70%{box-shadow:inset 0 0 0 4px var(--red);transform:translateX(-3px);}50%{transform:translateX(3px);}}
   .coinfly{position:fixed;z-index:55;pointer-events:none;width:26px;height:26px;}
 
-  .controls{display:flex;justify-content:center;gap:30px;margin:18px auto 6px;}
-  .ctrl{background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--ink);font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;position:relative;}
+  .controls{display:flex;justify-content:center;gap:36px;margin:20px auto 6px;}
+  .ctrl{background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--ink);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;position:relative;}
   .ctrl:active{transform:scale(.92);}
-  .ctrl .cbox{width:52px;height:52px;border-radius:15px;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink);}
-  .ctrl .cbox svg{width:24px;height:24px;}
+  .ctrl .cbox{width:60px;height:60px;border-radius:17px;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink);}
+  .ctrl .cbox svg{width:29px;height:29px;}
   .ctrl .badge2{position:absolute;top:-4px;right:2px;background:var(--teal);color:#fff;font-size:10px;min-width:17px;height:17px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 3px;}
 
   /* shop */
@@ -126,6 +129,8 @@
   .bag-card .nm{font-size:12px;font-weight:700;margin-top:4px;}
   .bag-card .meta{font-size:10px;color:var(--ink-soft);margin-top:1px;}
   .bag-card.active{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent),var(--shadow);}
+  .bag-card.renaming{animation:renpulse 1.1s ease-in-out infinite;}
+  @keyframes renpulse{0%,100%{box-shadow:0 0 0 0 rgba(245,197,66,.0),var(--shadow);}50%{box-shadow:0 0 0 3px var(--gold),var(--shadow);}}
   .bag-card .rar{position:absolute;top:6px;left:6px;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;padding:2px 6px;border-radius:999px;z-index:2;}
   .bag-card .eq{position:absolute;top:6px;right:6px;background:var(--good);color:#fff;font-size:8px;font-weight:800;padding:2px 6px;border-radius:999px;z-index:2;}
   .bag-card .ct{position:absolute;bottom:6px;right:8px;background:var(--ink);color:var(--bg);font-size:11px;font-weight:800;padding:1px 7px;border-radius:999px;z-index:2;}
@@ -366,6 +371,7 @@ const ICON={
   vibrate:(c='currentColor')=>`<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="4" width="8" height="16" rx="2"/><path d="M4 9v6M20 9v6"/></svg>`,
   cloud:(c='currentColor')=>`<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .5-9 6 6 0 0 0-11.5-1.5A4 4 0 0 0 6.5 19z"/></svg>`,
   google:()=>`<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.6-.1-1.2-.2-1.8H12v3.5h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.2z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 13.9a6 6 0 0 1 0-3.8V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 5.9c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5l3.3 2.6C7.2 7.6 9.4 5.9 12 5.9z"/></svg>`,
+  bone:(c='#f5c542')=>`<svg viewBox="0 0 24 24"><g transform="rotate(-35 12 12)"><rect x="6" y="10" width="12" height="4" rx="2" fill="${c}"/><circle cx="6" cy="10" r="2.5" fill="${c}"/><circle cx="6" cy="14" r="2.5" fill="${c}"/><circle cx="18" cy="10" r="2.5" fill="${c}"/><circle cx="18" cy="14" r="2.5" fill="${c}"/></g></svg>`,
 };
 
 /* ---------- color utils ---------- */
@@ -404,6 +410,8 @@ function dogSVG(d){
   if(d.pattern==='saddle')bodyPat=`<path d="M35 60 q15 -7 30 0 q4 13 -2 23 q-13 6 -26 0 q-6 -11 -2 -23 z" fill="${d.patternColor||shade(coat,-24)}" opacity=".85"/>`;
   else if(d.pattern==='spots')bodyPat=`<circle cx="38" cy="74" r="4.3" fill="${d.patternColor||shade(coat,-26)}"/><circle cx="61" cy="82" r="3.4" fill="${d.patternColor||shade(coat,-26)}"/><circle cx="54" cy="70" r="2.8" fill="${d.patternColor||shade(coat,-26)}"/>`;
   else if(d.pattern==='stars')bodyPat=`<path d="M40 72l1.4 3 3.3.3-2.5 2.2.8 3.2-3-1.7-3 1.7.8-3.2-2.5-2.2 3.3-.3z" fill="#fff" opacity=".9"/><circle cx="60" cy="80" r="1.3" fill="#fff"/><circle cx="56" cy="68" r="1" fill="#fff"/>`;
+  else if(d.pattern==='stripes')bodyPat=`<g fill="${d.patternColor||shade(coat,-26)}" opacity=".75"><path d="M30 66 q20 -6 40 0 l0 3.5 q-20 -6 -40 0 z"/><path d="M28 76 q22 -5 44 0 l0 3.5 q-22 -5 -44 0 z"/><path d="M30 86 q20 -4 40 0 l0 3.5 q-20 -4 -40 0 z"/></g>`;
+  else if(d.pattern==='freckles')bodyPat=`<g fill="${d.patternColor||shade(coat,-22)}" opacity=".75"><circle cx="42" cy="72" r="1.7"/><circle cx="58" cy="76" r="1.7"/><circle cx="50" cy="68" r="1.5"/><circle cx="36" cy="80" r="1.4"/><circle cx="64" cy="70" r="1.4"/></g>`;
   const chest=`<ellipse cx="50" cy="84" rx="12" ry="10" fill="${coat2}"/>`;
   const paws=`<ellipse cx="40" cy="92" rx="7.5" ry="5" fill="${coat2}"/><ellipse cx="60" cy="92" rx="7.5" ry="5" fill="${coat2}"/>`;
   const ears=earSVG(ear,earC);
@@ -411,6 +419,7 @@ function dogSVG(d){
   let headPat='';
   if(d.pattern==='mask')headPat=`<path d="M29 35 a21 21 0 0 1 42 0 a44 44 0 0 1 -7 15 q-14 -7 -28 0 a44 44 0 0 1 -7 -15 z" fill="${d.patternColor||shade(coat,-26)}" opacity=".88"/>`;
   else if(d.pattern==='patch')headPat=`<path d="M50 17 a22 22 0 0 1 20 15 a20 20 0 0 1 -20 11 z" fill="${d.patternColor||shade(coat,-18)}" opacity=".85"/>`;
+  else if(d.pattern==='blaze')headPat=`<path d="M46 17 q4 -2 8 0 l1.5 29 q-6 2 -11 0 z" fill="${d.patternColor||'#fff6e9'}" opacity=".95"/>`;
   const muzzle=`<ellipse cx="50" cy="47" rx="12.5" ry="10" fill="${coat2}"/>`;
   let eyes;
   if(eye==='happy')eyes=`<path d="M37 37 q4.5 -5.5 9 0" stroke="#2a1d16" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M54 37 q4.5 -5.5 9 0" stroke="#2a1d16" stroke-width="2.6" fill="none" stroke-linecap="round"/>`;
@@ -490,6 +499,12 @@ const DOGS=[
   {id:'samoyed',name:'Samoyed',rarity:'rare',crate:'park',coat:'#fbfbfb',ear:'pointy',coat2:'#f2f2f2',earC:'#e6e6e6',eye:'happy'},
   {id:'collie',name:'Border Collie',rarity:'rare',crate:'park',coat:'#2f2a24',ear:'pointy',coat2:'#fff',pattern:'patch',patternColor:'#fff'},
   {id:'flower',name:'Daisy',rarity:'rare',crate:'park',coat:'#f0d8a8',ear:'floppy',acc:'flower',eye:'happy'},
+  {id:'pointer',name:'Pointer',rarity:'common',crate:'park',coat:'#f3efe8',ear:'floppy',pattern:'freckles',patternColor:'#8a5a3a',earC:'#8a5a3a'},
+  {id:'aussie',name:'Aussie',rarity:'rare',crate:'park',coat:'#9aa2b0',ear:'floppy',pattern:'spots',patternColor:'#3a3340',coat2:'#fff',pattern2:1,eye:'glow',eyeColor:'#7fb3ff'},
+  {id:'brindle',name:'Brindle',rarity:'uncommon',crate:'park',coat:'#b07a3c',ear:'floppy',pattern:'stripes',patternColor:'#5a3a1c'},
+  {id:'bassan',name:'Basset',rarity:'uncommon',crate:'park',coat:'#e2c48a',ear:'long',pattern:'blaze',eye:'sleepy'},
+  {id:'cattle',name:'Blue Heeler',rarity:'rare',crate:'park',coat:'#8fa0b4',ear:'perky',pattern:'freckles',patternColor:'#3a4658',coat2:'#dfe6ef'},
+  {id:'chow',name:'Chow',rarity:'uncommon',crate:'park',coat:'#d98a4a',ear:'round',coat2:'#b5673a',tongue:1},
   // ---- royal (epic / legendary) ----
   {id:'knight',name:'Sir Barks',rarity:'epic',crate:'royal',coat:'#b7bfc9',ear:'pointy',acc:'cap',accColor:'#8a9099',theme:'royal'},
   {id:'prince',name:'Prince',rarity:'epic',crate:'royal',coat:'#efe2cf',ear:'round',acc:'crown',accColor:'#f5c542',theme:'royal'},
@@ -549,7 +564,13 @@ const QUESTS=[
 ];
 
 /* ---------- Level config + Star Battle generator ---------- */
-function levelConfig(n){const N=n<=2?5:n<=5?6:n<=8?7:8;return {N,hearts:3,hints:1,name:['Puppy Park','Backyard','The Dog Park','Hydrant Lane','Muddy Meadow','Shelter Street','Bark Avenue','Howl Hills','Bone Mountain','The Big Yard'][Math.min(n-1,9)]};}
+function isGolden(n){return typeof n==='number'&&n%5===0;}
+function levelConfig(n){
+  const gold=isGolden(n);
+  let N=n<=1?5:n<=3?6:n<=5?7:n<=8?8:9; // steeper curve, up to 9 — harder
+  if(gold)N=7;
+  return {N,hearts:3,hints:1,gold,name:gold?'Golden Bone Level':['Puppy Park','Backyard','The Dog Park','Hydrant Lane','Muddy Meadow','Shelter Street','Bark Avenue','Howl Hills','Bone Mountain','The Big Yard'][Math.min(n-1,9)]};
+}
 const REGION_COLORS=['#8fd49a','#f2a58c','#f3b3c4','#9cc4e8','#f4d98a','#c6b6e8','#8ed3c6','#f6bd7a','#ece0c6'];
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(RNG()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function genSolution(N){const col=Array(N).fill(-1),used=Array(N).fill(false);
@@ -571,7 +592,12 @@ function countSolH(N,region,hintSet,limit){const cells=Array.from({length:N},()=
 function minimalHints(N,region,solCells){const hints=new Set();let g=0;
   while(countSolH(N,region,hints,2)>1&&g++<N){let best=-1,bc=1e9;for(const c of solCells){if(hints.has(c))continue;const t=new Set(hints);t.add(c);const cnt=countSolH(N,region,t,6);if(cnt<bc){bc=cnt;best=c;}}if(best<0)break;hints.add(best);}
   return hints;}
-function generatePuzzle(N){for(let a=0;a<80;a++){const col=genSolution(N);if(!col)continue;const solCells=col.map((c,r)=>r*N+c);const region=genRegions(N,solCells);if(!region||region.includes(-1))continue;const hints=minimalHints(N,region,solCells);if(countSolH(N,region,hints,2)!==1)continue;if(hints.size===0)hints.add(solCells[Math.floor(RNG()*solCells.length)]);if(hints.size>=N){const arr=[...hints];hints.delete(arr[arr.length-1]);}return {N,region,solCells,startHints:[...hints]};}
+function generatePuzzle(N,noHints){
+  let best=null;
+  for(let a=0;a<(noHints?280:80);a++){const col=genSolution(N);if(!col)continue;const solCells=col.map((c,r)=>r*N+c);const region=genRegions(N,solCells);if(!region||region.includes(-1))continue;const hints=minimalHints(N,region,solCells);if(countSolH(N,region,hints,2)!==1)continue;
+    if(noHints){if(hints.size===0)return {N,region,solCells,startHints:[]};if(!best)best={N,region,solCells,startHints:[...hints]};continue;}
+    if(hints.size===0)hints.add(solCells[Math.floor(RNG()*solCells.length)]);if(hints.size>=N){const arr=[...hints];hints.delete(arr[arr.length-1]);}return {N,region,solCells,startHints:[...hints]};}
+  if(best)return best;
   const col=genSolution(N),solCells=col.map((c,r)=>r*N+c),region=genRegions(N,solCells);const hints=minimalHints(N,region,solCells);if(hints.size===0)hints.add(solCells[0]);return {N,region,solCells,startHints:[...hints]};}
 
 /* ---------- Persistence ---------- */
@@ -579,7 +605,8 @@ const META_KEY='pupspot.meta';
 function loadMeta(){let m;try{m=JSON.parse(localStorage.getItem(META_KEY));}catch(e){}if(!m)m={};
   return Object.assign({level:1,maxLevel:1,cleared:0,dogsPlaced:0,coins:150,boostUntil:0,
     dogs:['golden'],active:'golden',crates:{},cratesOpened:0,claimed:{},tutorialDone:false,
-    sfx:true,music:true,vibe:true,lastDaily:null,streak:0,dailyBest:0,stars:{}},m);}
+    sfx:true,music:true,vibe:true,lastDaily:null,streak:0,dailyBest:0,stars:{},goldenBones:0,dogNames:{}},m);}
+function dogName(id){return (meta.dogNames&&meta.dogNames[id])||(dogById(id)||{}).name||'Pup';}
 function saveMeta(){try{localStorage.setItem(META_KEY,JSON.stringify(meta));}catch(e){}try{if(typeof CLOUD!=='undefined'&&CLOUD.user)CLOUD.push();}catch(e){}}
 let meta=loadMeta();
 
@@ -663,9 +690,9 @@ function addCoins(n){const mult=boostActive()?2:1;const total=n*mult;meta.coins+
 function startLevel(n){
   showLoader(true);
   setTimeout(()=>{
-    const cfg=levelConfig(n);const {N,region,solCells,startHints}=generatePuzzle(cfg.N);
+    const cfg=levelConfig(n);const {N,region,solCells,startHints}=generatePuzzle(cfg.N,cfg.gold);
     const sol=new Set(solCells);
-    G={n,N,cfg,region,sol,placed:Array(N*N).fill(false),x:Array(N*N).fill(false),hearts:cfg.hearts,hints:cfg.hints,total:N,found:0};
+    G={n,N,cfg,region,sol,placed:Array(N*N).fill(false),x:Array(N*N).fill(false),hearts:cfg.hearts,hints:cfg.hints,total:N,found:0,isGolden:cfg.gold};
     startHints.forEach(c=>placeDog(c));
     showLoader(false);buildBoard();renderHud();showScreen('game');$('#nav').classList.add('hidden');
   },30);
@@ -679,7 +706,11 @@ function flashWrong(i){const el=boardEl.children[i];if(!el)return;el.classList.r
 function sparkleAt(i){const el=boardEl.children[i];if(!el)return;const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cols=['#f5c542','#ff8fb0','#8ed3c6','#ffffff'];
   for(let k=0;k<9;k++){const p=document.createElement('div');p.style.cssText=`position:fixed;z-index:58;left:${cx}px;top:${cy}px;width:8px;height:8px;border-radius:50%;pointer-events:none;background:${cols[k%cols.length]};`;document.body.appendChild(p);
     const ang=Math.random()*6.28,dist=22+Math.random()*36;p.animate([{transform:'translate(-50%,-50%) scale(1)',opacity:1},{transform:`translate(calc(-50% + ${Math.cos(ang)*dist}px),calc(-50% + ${Math.sin(ang)*dist}px)) scale(0)`,opacity:0}],{duration:450+Math.random()*250,easing:'cubic-bezier(.2,.7,.3,1)'}).onfinish=()=>p.remove();}}
-function buildBoard(){const N=G.N;boardEl.style.gridTemplateColumns=`repeat(${N},1fr)`;boardEl.style.gridTemplateRows=`repeat(${N},1fr)`;boardEl.innerHTML='';
+function buildBoard(){const N=G.N;boardEl.classList.toggle('golden',!!G.isGolden);
+  const wrap=boardEl.parentElement;let ban=wrap.querySelector('.gold-banner');
+  if(G.isGolden){if(!ban){ban=document.createElement('div');ban.className='gold-banner';wrap.insertBefore(ban,boardEl);}ban.innerHTML=`${ICON.bone('#9a6a00')} Golden Bone Level — no pups shown!`;ban.querySelectorAll('svg').forEach(s=>{s.style.width='22px';s.style.height='22px';});}
+  else if(ban)ban.remove();
+  boardEl.style.gridTemplateColumns=`repeat(${N},1fr)`;boardEl.style.gridTemplateRows=`repeat(${N},1fr)`;boardEl.innerHTML='';
   for(let i=0;i<N*N;i++){const cell=document.createElement('div');cell.className='cell';cell.dataset.i=i;cell.style.background=REGION_COLORS[G.region[i]%REGION_COLORS.length];wireCell(cell,i);boardEl.appendChild(cell);}render();}
 function renderCell(i){const cell=boardEl.children[i];if(!cell)return;cell.classList.remove('dog','secret');cell.innerHTML='';
   const dog=dogById(meta.active)||DOGS[0];
@@ -688,7 +719,13 @@ function renderCell(i){const cell=boardEl.children[i];if(!cell)return;cell.class
 function render(){for(let i=0;i<G.N*G.N;i++)renderCell(i);}
 function renderHud(){const h=$('#hearts');h.innerHTML='';for(let k=0;k<G.cfg.hearts;k++)h.innerHTML+=ICON.heart(k<G.hearts?'#ef6b55':'var(--line-strong)',k<G.hearts);
   $('#foundTxt').textContent=`${G.found}/${G.total}`;$('#gLvl').textContent=G.isDaily?'Daily':'Lv '+G.n;$('#hintBadge').textContent=G.hints;$('#hintBadge').style.display=G.hints>0?'':'none';}
-function wireCell(cell,i){let t=null;cell.addEventListener('click',()=>{if(t){clearTimeout(t);t=null;onDouble(i);}else{t=setTimeout(()=>{t=null;onSingle(i);},240);}});}
+function wireCell(cell,i){let last=0,prevX=false;
+  cell.addEventListener('click',()=>{
+    if(!G||G.placed[i])return;
+    const now=Date.now(),dt=now-last;
+    if(dt<=400){ last=0; G.x[i]=prevX; onDouble(i); renderCell(i); }   // second tap within 400ms → place a pup
+    else { last=now; prevX=G.x[i]; onSingle(i); }                      // first tap → instant X mark
+  });}
 function hint(){if(!G)return;if(G.hints<=0){AU.wrong();toast('No sniffs left');return;}const left=[...G.sol].filter(c=>!G.placed[c]);if(left.length<=1){toast('You can do the last one!');return;}G.hints--;const c=left[Math.floor(Math.random()*left.length)];placeDog(c);AU.correct();HAPTIC(20);sparkleAt(c);render();renderHud();if(G.found>=G.total)setTimeout(levelWin,320);}
 function clearX(){if(!G)return;for(let i=0;i<G.N*G.N;i++)if(!G.placed[i])G.x[i]=false;render();}
 
@@ -710,6 +747,16 @@ function levelWin(){
   }
   meta.cleared++;meta.dogsPlaced+=G.total;if(G.n>=meta.maxLevel)meta.maxLevel=G.n+1;meta.level=G.n+1;
   if(!meta.stars[G.n]||stars>meta.stars[G.n])meta.stars[G.n]=stars;
+  if(G.isGolden){
+    meta.goldenBones=(meta.goldenBones||0)+1;
+    const gained=addCoins(100);coinBurst(gained);
+    saveMeta();refreshQuestDot();
+    modal({art:dogSVG(dog),artExtra:starRowHTML(stars),title:'Golden Bone earned!',
+      text:'Spend a Golden Bone in your Bag to rename any pup you own.',
+      rewards:[{icon:ICON.bone(),v:'+1',l:'golden bone'},{icon:ICON.coin(),v:'+'+gained,l:'coins'}],
+      buttons:[{label:'Rename a pup',primary:true,act:()=>{closeModal();bagTab='dogs';showScreen('bag');}},{label:'Next Level',act:()=>{closeModal();startLevel(meta.level);}},{label:'Home',act:()=>{closeModal();goHome();}}]});
+    return;
+  }
   let coins=10,bonus=0;if(Math.random()<0.3){bonus=5+Math.floor(Math.random()*16);coins+=bonus;}
   const gained=addCoins(coins);coinBurst(gained);
   saveMeta();refreshQuestDot();
@@ -849,25 +896,30 @@ function emitCineFX(dog,rar,dur){
 }
 
 /* ---------- Bag ---------- */
-let bagTab='dogs';
+let bagTab='dogs',renameMode=false;
 function renderBag(){
   updateCoins();
-  const ndogs=meta.dogs.length,ncrates=Object.values(meta.crates).reduce((a,b)=>a+b,0);
-  $('#bagSub').textContent=`${ndogs} pup${ndogs>1?'s':''} · ${ncrates} crate${ncrates!==1?'s':''}`;
+  const ndogs=meta.dogs.length,ncrates=Object.values(meta.crates).reduce((a,b)=>a+b,0),gb=meta.goldenBones||0;
+  $('#bagSub').textContent=`${ndogs} pup${ndogs>1?'s':''} · ${ncrates} crate${ncrates!==1?'s':''}${gb>0?' · '+gb+' golden bone'+(gb>1?'s':''):''}`;
   $('#tabDogs').classList.toggle('on',bagTab==='dogs');$('#tabCrates').classList.toggle('on',bagTab==='crates');
   const grid=$('#bagGrid');grid.innerHTML='';
   if(bagTab==='dogs'){
-    // owned dogs, sorted by rarity desc
+    if((meta.goldenBones||0)>0){
+      const rb=document.createElement('button');rb.className='btn '+(renameMode?'btn-primary':'btn-ghost');rb.style.cssText='grid-column:1/-1;width:100%';
+      rb.innerHTML=`<span style="width:20px;height:20px;display:inline-flex">${ICON.bone(renameMode?'#3a2000':'#9a5400')}</span> ${renameMode?'Tap a pup to rename it':'Rename a pup ('+meta.goldenBones+' golden bone'+(meta.goldenBones>1?'s':'')+')'}`;
+      rb.onclick=()=>{AU.button();renameMode=!renameMode;renderBag();};
+      grid.appendChild(rb);
+    } else renameMode=false;
     const order={secret:6,mythic:5,legendary:4,epic:3,rare:2,common:1};
     const owned=DOGS.filter(d=>meta.dogs.includes(d.id)).sort((a,b)=>order[b.rarity]-order[a.rarity]);
     for(const d of owned){
       const active=meta.active===d.id,isSecret=d.rarity==='secret';
-      const el=document.createElement('div');el.className='bag-card'+(active?' active':'');
+      const el=document.createElement('div');el.className='bag-card'+(active?' active':'')+(renameMode?' renaming':'');
       el.innerHTML=`${isSecret?'<div class="aura"></div>':''}
         <span class="rar" style="background:${RARITY[d.rarity].color}22;color:${RARITY[d.rarity].color}">${RARITY[d.rarity].label}</span>
         ${active?'<span class="eq">On</span>':''}
-        ${dogSVG(d)}<div class="nm">${d.name}</div><div class="meta">${d.theme?'Theme pup':'Tap to equip'}</div>`;
-      el.onclick=()=>{meta.active=d.id;saveMeta();applyTheme(d.theme||'default');renderBag();toast(d.name+' equipped!');};
+        ${dogSVG(d)}<div class="nm">${dogName(d.id)}</div><div class="meta">${renameMode?'Tap to rename':(d.theme?'Theme pup':'Tap to equip')}</div>`;
+      el.onclick=()=>{if(renameMode){renameMode=false;openRename(d.id);return;}meta.active=d.id;saveMeta();applyTheme(d.theme||'default');renderBag();toast(dogName(d.id)+' equipped!');};
       grid.appendChild(el);
     }
   } else {
@@ -880,6 +932,20 @@ function renderBag(){
       grid.appendChild(el);
     }
   }
+}
+
+function openRename(id){
+  if((meta.goldenBones||0)<=0){toast('No golden bones');return;}
+  const root=$('#modal-root');const cur=dogName(id).replace(/"/g,'');
+  root.innerHTML=`<div class="modal"><div class="art">${dogSVG(dogById(id))}</div><h2>Rename pup</h2>
+    <p>Give this pup a new name. Uses 1 golden bone.</p>
+    <input id="renameInput" maxlength="16" value="${cur}" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:'Fredoka',inherit;font-size:17px;font-weight:700;text-align:center;margin-bottom:12px"/>
+    <button class="btn btn-primary" id="renameSave">Save name</button>
+    <button class="btn btn-ghost" id="renameCancel" style="margin-top:10px">Cancel</button></div>`;
+  root.classList.add('show');
+  const inp=$('#renameInput');setTimeout(()=>{try{inp.focus();inp.select();}catch(e){}},60);
+  $('#renameSave').onclick=()=>{const v=(inp.value||'').replace(/[<>]/g,'').trim().slice(0,16);if(!v){toast('Enter a name');return;}meta.dogNames[id]=v;meta.goldenBones=Math.max(0,(meta.goldenBones||0)-1);saveMeta();AU.coin();closeModal();toast('Renamed to '+v);renderBag();};
+  $('#renameCancel').onclick=()=>{AU.button();closeModal();renderBag();};
 }
 
 /* ---------- Quests ---------- */
@@ -1059,6 +1125,8 @@ function mergeMeta(c){if(!c)return;
   const cr=Object.assign({},c.crates||{});for(const k in(meta.crates||{}))cr[k]=mx(cr[k],meta.crates[k]);meta.crates=cr;
   meta.claimed=Object.assign({},c.claimed||{},meta.claimed||{});
   meta.stars=Object.assign({},c.stars||{},meta.stars||{});
+  meta.goldenBones=mx(meta.goldenBones,c.goldenBones);
+  meta.dogNames=Object.assign({},c.dogNames||{},meta.dogNames||{});
   if(c.lastDaily&&(!meta.lastDaily||c.lastDaily>meta.lastDaily))meta.lastDaily=c.lastDaily;
   if(c.tutorialDone)meta.tutorialDone=true;
 }
@@ -1072,7 +1140,7 @@ function wireAuthBtn(){const b=$('#authBtn');if(!b)return;b.onclick=()=>{AU.butt
 function updateAuthUI(){const box=$('#authBox');if(box){box.innerHTML=authBoxHTML();wireAuthBtn();}}
 
 /* ---------- Version / update check (GitHub) ---------- */
-const APP_VERSION='1.1.0',APP_VERSION_CODE=2;
+const APP_VERSION='1.2.0',APP_VERSION_CODE=3;
 const GH_REPO='zortman/PupSpot';
 const VERSION_URL=`https://raw.githubusercontent.com/${GH_REPO}/main/version.json`;
 const RELEASES_URL=`https://github.com/${GH_REPO}/releases/latest`;
