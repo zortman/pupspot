@@ -82,7 +82,7 @@
   .foundbox{display:flex;align-items:center;gap:6px;font-weight:700;font-size:19px;}.foundbox svg{width:23px;height:23px;}
   .lvlbox{font-size:14px;color:var(--ink-soft);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
 
-  .board-wrap{width:100%;max-width:540px;margin:4px auto 0;position:relative;}
+  .board-wrap{width:100%;max-width:560px;margin:auto auto 0;position:relative;flex:0 0 auto;}
   #board{width:100%;aspect-ratio:1/1;display:grid;gap:2.4%;background:var(--tray);padding:2.6%;border-radius:24px;
     box-shadow:var(--shadow),inset 0 2px 5px rgba(255,255,255,.3);transition:background .4s;}
   #board.golden{background:linear-gradient(140deg,#ffe9a8,#f3b43f);box-shadow:0 0 26px rgba(245,197,66,.5),var(--shadow);}
@@ -92,8 +92,11 @@
     box-shadow:inset 0 -4px 0 rgba(0,0,0,.1),inset 0 3px 0 rgba(255,255,255,.35);}
   .cell:active{transform:scale(.9);}
   .cell.dog{padding:3%;}
-  .cell.dog svg{width:100%;height:100%;filter:drop-shadow(0 2px 2px rgba(0,0,0,.22));animation:pp .35s cubic-bezier(.2,1.4,.4,1);}
+  .cell.dog svg{width:100%;height:100%;filter:drop-shadow(0 2px 2px rgba(0,0,0,.22));animation:pp .35s cubic-bezier(.2,1.4,.4,1),dance 1.7s ease-in-out .35s infinite;transform-origin:50% 90%;}
   @keyframes pp{0%{transform:scale(.2);}60%{transform:scale(1.15);}100%{transform:scale(1);}}
+  @keyframes dance{0%,100%{transform:translateY(0) rotate(-4deg);}25%{transform:translateY(-7%) rotate(4deg);}50%{transform:translateY(0) rotate(-2deg);}75%{transform:translateY(-5%) rotate(3deg);}}
+  .findring{position:fixed;z-index:56;pointer-events:none;border-radius:50%;border:4px solid var(--good);opacity:.9;}
+  @keyframes ringburst{0%{transform:translate(-50%,-50%) scale(.3);opacity:.9;}100%{transform:translate(-50%,-50%) scale(1.6);opacity:0;}}
   .cell.dog.secret{animation:secpulse 1.6s ease-in-out infinite;}
   @keyframes secpulse{0%,100%{box-shadow:inset 0 -4px 0 rgba(0,0,0,.1),0 0 0 0 rgba(255,80,210,.0);}50%{box-shadow:inset 0 -4px 0 rgba(0,0,0,.1),0 0 16px 3px rgba(255,80,210,.6);}}
   .cell .x{width:60%;height:60%;filter:drop-shadow(0 1.5px 1px rgba(0,0,0,.22));animation:pp .2s ease;}
@@ -101,7 +104,7 @@
   @keyframes wr{0%,100%{box-shadow:inset 0 0 0 0 var(--red);}30%,70%{box-shadow:inset 0 0 0 4px var(--red);transform:translateX(-3px);}50%{transform:translateX(3px);}}
   .coinfly{position:fixed;z-index:55;pointer-events:none;width:26px;height:26px;}
 
-  .controls{display:flex;justify-content:center;gap:36px;margin:20px auto 6px;}
+  .controls{display:flex;justify-content:center;gap:36px;margin:16px auto calc(env(safe-area-inset-bottom) + 10px);flex:0 0 auto;}
   .ctrl{background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--ink);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;position:relative;}
   .ctrl:active{transform:scale(.92);}
   .ctrl .cbox{width:60px;height:60px;border-radius:17px;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink);}
@@ -131,6 +134,8 @@
   .bag-card.active{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent),var(--shadow);}
   .bag-card.renaming{animation:renpulse 1.1s ease-in-out infinite;}
   @keyframes renpulse{0%,100%{box-shadow:0 0 0 0 rgba(245,197,66,.0),var(--shadow);}50%{box-shadow:0 0 0 3px var(--gold),var(--shadow);}}
+  .bag-card.selling{animation:sellpulse 1.1s ease-in-out infinite;}
+  @keyframes sellpulse{0%,100%{box-shadow:0 0 0 0 rgba(239,107,85,0),var(--shadow);}50%{box-shadow:0 0 0 3px var(--red),var(--shadow);}}
   .bag-card .rar{position:absolute;top:6px;left:6px;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;padding:2px 6px;border-radius:999px;z-index:2;}
   .bag-card .eq{position:absolute;top:6px;right:6px;background:var(--good);color:#fff;font-size:8px;font-weight:800;padding:2px 6px;border-radius:999px;z-index:2;}
   .bag-card .ct{position:absolute;bottom:6px;right:8px;background:var(--ink);color:var(--bg);font-size:11px;font-weight:800;padding:1px 7px;border-radius:999px;z-index:2;}
@@ -304,6 +309,23 @@
     <div id="questList"></div>
   </section>
 
+  <!-- PROFILE -->
+  <section id="profile" class="screen">
+    <div class="brand"><span class="logo" id="profLogo"></span><div><h1>Profile</h1><div class="tag">Your pack</div></div>
+      <span class="spacer"></span><span class="coinpill"><span id="coinIcon5"></span><span id="coinNum5">0</span></span></div>
+    <div class="card" style="text-align:center">
+      <div id="profAvatar" style="width:96px;height:96px;margin:0 auto 4px"></div>
+      <div id="profName" style="font-size:21px;font-weight:700;font-family:'Fredoka',sans-serif">Player</div>
+      <div id="profLvl" style="color:var(--accent-ink);font-weight:800;margin-top:2px">Level 1</div>
+      <div class="bar" style="margin-top:10px"><i id="profXpBar" style="width:0%"></i></div>
+      <div id="profXpTxt" style="font-size:12px;color:var(--ink-soft);margin-top:5px">0 / 120 XP</div>
+      <button class="btn btn-ghost" id="profNameBtn" style="margin-top:12px;width:100%">Change name</button>
+    </div>
+    <div class="stat-grid" id="profStats"></div>
+    <button class="btn btn-primary" id="profLeaderboard" style="margin-top:4px;width:100%"><span id="trophyIcon"></span> Leaderboard</button>
+    <button class="btn btn-ghost" id="profAdmin" style="margin-top:10px;width:100%;display:none">Admin Panel</button>
+  </section>
+
   <!-- GAME -->
   <section id="game" class="screen game-screen">
     <div class="g-top">
@@ -324,6 +346,7 @@
     <button data-screen="shop"><span id="navShop"></span>Shop</button>
     <button data-screen="bag"><span id="navBag"></span>Bag</button>
     <button data-screen="quests"><span id="navQuest"></span>Quests</button>
+    <button data-screen="profile"><span id="navProfile"></span>Me</button>
   </nav>
 </div>
 
@@ -372,6 +395,8 @@ const ICON={
   cloud:(c='currentColor')=>`<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .5-9 6 6 0 0 0-11.5-1.5A4 4 0 0 0 6.5 19z"/></svg>`,
   google:()=>`<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.6-.1-1.2-.2-1.8H12v3.5h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.2z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 13.9a6 6 0 0 1 0-3.8V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 5.9c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5l3.3 2.6C7.2 7.6 9.4 5.9 12 5.9z"/></svg>`,
   bone:(c='#f5c542')=>`<svg viewBox="0 0 24 24"><g transform="rotate(-35 12 12)"><rect x="6" y="10" width="12" height="4" rx="2" fill="${c}"/><circle cx="6" cy="10" r="2.5" fill="${c}"/><circle cx="6" cy="14" r="2.5" fill="${c}"/><circle cx="18" cy="10" r="2.5" fill="${c}"/><circle cx="18" cy="14" r="2.5" fill="${c}"/></g></svg>`,
+  person:(c='currentColor')=>`<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>`,
+  trophy:(c='#f5c542')=>`<svg viewBox="0 0 24 24" fill="${c}"><path d="M7 4h10v3a5 5 0 0 1-10 0z"/><path d="M5 5H3v2a4 4 0 0 0 4 4M19 5h2v2a4 4 0 0 1-4 4" fill="none" stroke="${c}" stroke-width="2"/><path d="M10 12h4v4h-4z"/><rect x="8" y="18" width="8" height="2.5" rx="1"/><rect x="9.5" y="15" width="5" height="3"/></svg>`,
 };
 
 /* ---------- color utils ---------- */
@@ -474,6 +499,7 @@ function applyTheme(t){
 /* ---------- Rarity ---------- */
 const RARITY={
   common:{label:'Common',color:'#9aa7b4'},
+  uncommon:{label:'Uncommon',color:'#4bb06a'},
   rare:{label:'Rare',color:'#3f9fe0'},
   epic:{label:'Epic',color:'#a85fe0'},
   legendary:{label:'Legendary',color:'#f5a623'},
@@ -533,7 +559,7 @@ const dogById=id=>DOGS.find(d=>d.id===id);
 
 /* ---------- Crates ---------- */
 const CRATES={
-  park:{id:'park',name:'Park Crate',tier:'Basic',price:100,ill:['#caa05f','#b07a3c'],weights:{common:72,rare:23,epic:4.4,legendary:.6,mythic:0}},
+  park:{id:'park',name:'Park Crate',tier:'Basic',price:100,ill:['#caa05f','#b07a3c'],weights:{common:55,uncommon:22,rare:18,epic:4.2,legendary:.8,mythic:0}},
   royal:{id:'royal',name:'Royal Crate',tier:'Mythic',price:500,ill:['#f5d58a','#d9a53f'],weights:{common:0,rare:40,epic:42,legendary:16,mythic:2}},
   spooky:{id:'spooky',name:'Spooky Crate',tier:'Mythic',price:500,ill:['#8a6fb0','#5a4080'],weights:{common:0,rare:34,epic:44,legendary:0,mythic:22}},
   cosmic:{id:'cosmic',name:'Cosmic Crate',tier:'Legendary',price:1000,ill:['#6f8ad0','#3f55a0'],weights:{common:0,rare:0,epic:38,legendary:40,mythic:22}},
@@ -592,11 +618,14 @@ function countSolH(N,region,hintSet,limit){const cells=Array.from({length:N},()=
 function minimalHints(N,region,solCells){const hints=new Set();let g=0;
   while(countSolH(N,region,hints,2)>1&&g++<N){let best=-1,bc=1e9;for(const c of solCells){if(hints.has(c))continue;const t=new Set(hints);t.add(c);const cnt=countSolH(N,region,t,6);if(cnt<bc){bc=cnt;best=c;}}if(best<0)break;hints.add(best);}
   return hints;}
+function rollHintCount(){const r=RNG();return r<0.62?1:r<0.9?2:3;} // mostly 1, sometimes 2, rarely 3
+function padHints(hintSet,solCells,target){const arr=[...hintSet];const extra=solCells.filter(c=>!hintSet.has(c));shuffle(extra);while(arr.length<target&&extra.length)arr.push(extra.pop());return arr;}
 function generatePuzzle(N,noHints){
-  let best=null;
-  for(let a=0;a<(noHints?280:80);a++){const col=genSolution(N);if(!col)continue;const solCells=col.map((c,r)=>r*N+c);const region=genRegions(N,solCells);if(!region||region.includes(-1))continue;const hints=minimalHints(N,region,solCells);if(countSolH(N,region,hints,2)!==1)continue;
+  let best=null;const target=noHints?0:rollHintCount();
+  for(let a=0;a<(noHints?280:70);a++){const col=genSolution(N);if(!col)continue;const solCells=col.map((c,r)=>r*N+c);const region=genRegions(N,solCells);if(!region||region.includes(-1))continue;const hints=minimalHints(N,region,solCells);if(countSolH(N,region,hints,2)!==1)continue;
     if(noHints){if(hints.size===0)return {N,region,solCells,startHints:[]};if(!best)best={N,region,solCells,startHints:[...hints]};continue;}
-    if(hints.size===0)hints.add(solCells[Math.floor(RNG()*solCells.length)]);if(hints.size>=N){const arr=[...hints];hints.delete(arr[arr.length-1]);}return {N,region,solCells,startHints:[...hints]};}
+    if(hints.size<=target)return {N,region,solCells,startHints:padHints(hints,solCells,Math.max(1,target))};
+    if(!best||hints.size<best.startHints.length)best={N,region,solCells,startHints:[...hints]};}
   if(best)return best;
   const col=genSolution(N),solCells=col.map((c,r)=>r*N+c),region=genRegions(N,solCells);const hints=minimalHints(N,region,solCells);if(hints.size===0)hints.add(solCells[0]);return {N,region,solCells,startHints:[...hints]};}
 
@@ -605,7 +634,8 @@ const META_KEY='pupspot.meta';
 function loadMeta(){let m;try{m=JSON.parse(localStorage.getItem(META_KEY));}catch(e){}if(!m)m={};
   return Object.assign({level:1,maxLevel:1,cleared:0,dogsPlaced:0,coins:150,boostUntil:0,
     dogs:['golden'],active:'golden',crates:{},cratesOpened:0,claimed:{},tutorialDone:false,
-    sfx:true,music:true,vibe:true,lastDaily:null,streak:0,dailyBest:0,stars:{},goldenBones:0,dogNames:{}},m);}
+    sfx:true,music:true,vibe:true,lastDaily:null,streak:0,dailyBest:0,stars:{},goldenBones:0,dogNames:{},
+    sniffs:0,xp:0,profileName:'',eventMult:1,eventUntil:0},m);}
 function dogName(id){return (meta.dogNames&&meta.dogNames[id])||(dogById(id)||{}).name||'Pup';}
 function saveMeta(){try{localStorage.setItem(META_KEY,JSON.stringify(meta));}catch(e){}try{if(typeof CLOUD!=='undefined'&&CLOUD.user)CLOUD.push();}catch(e){}}
 let meta=loadMeta();
@@ -655,6 +685,8 @@ const AU={
   markx(){this.play(t=>this.note(320,t,0.06,'square',0.07));},
   correct(){this.play(t=>[523,659,784].forEach((f,i)=>this.note(f,t+i*0.055,0.18,'sine',0.2)));},
   wrong(){this.play(t=>{this.note(180,t,0.22,'sawtooth',0.18,90);this.noise(t,0.1,0.08,400);});},
+  woof(){this.play(t=>{this.note(360,t,0.055,'square',0.16,180);this.noise(t,0.05,0.09,650);this.note(210,t+0.07,0.15,'sawtooth',0.2,105);this.noise(t+0.07,0.08,0.06,320);});},
+  growl(){this.play(t=>{for(let k=0;k<5;k++)this.note(96-k*3,t+k*0.06,0.09,'sawtooth',0.17);this.noise(t,0.34,0.05,150);});},
   coin(){this.play(t=>{this.note(988,t,0.08,'square',0.14);this.note(1319,t+0.07,0.13,'square',0.14);});},
   win(){this.play(t=>{[523,659,784,1047].forEach((f,i)=>this.note(f,t+i*0.1,0.3,'triangle',0.22));this.note(1047,t+0.42,0.5,'sine',0.16);});},
   roll(){this.play(t=>this.noise(t,0.025,0.05,1400));},
@@ -684,7 +716,12 @@ let G=null;const $=s=>document.querySelector(s);const boardEl=$('#board');
 /* ---------- boost / coins helpers ---------- */
 function boostActive(){return meta.boostUntil>Date.now();}
 function boostMinsLeft(){return Math.max(0,Math.ceil((meta.boostUntil-Date.now())/60000));}
-function addCoins(n){const mult=boostActive()?2:1;const total=n*mult;meta.coins+=total;saveMeta();return total;}
+function eventActive(){return (meta.eventUntil||0)>Date.now()&&(meta.eventMult||1)>1;}
+function activeMult(){let m=boostActive()?2:1;if(eventActive()&&meta.eventMult>m)m=meta.eventMult;if(liveEvent.until>Date.now()&&liveEvent.mult>m)m=liveEvent.mult;return m;}
+function addCoins(n){const total=Math.round(n*activeMult());meta.coins+=total;saveMeta();return total;}
+function xpForLevel(l){return 120+(l-1)*60;}
+function playerLevel(xp){let lvl=1,need=xpForLevel(1),acc=0;while(xp>=acc+need){acc+=need;lvl++;need=xpForLevel(lvl);}return {level:lvl,into:xp-acc,need};}
+function gainXP(n){const before=playerLevel(meta.xp||0).level;meta.xp=(meta.xp||0)+n;const after=playerLevel(meta.xp).level;saveMeta();if(after>before){toast('Profile level '+after+'!');AU.coin();}}
 
 /* ---------- Game ---------- */
 function startLevel(n){
@@ -700,12 +737,15 @@ function startLevel(n){
 function placeDog(cell){if(G.placed[cell])return;G.placed[cell]=true;G.x[cell]=false;G.found++;}
 function onSingle(i){if(!G||G.placed[i])return;G.x[i]=!G.x[i];AU.markx();HAPTIC(8);renderCell(i);}
 function onDouble(i){if(!G||G.placed[i])return;
-  if(G.sol.has(i)){placeDog(i);AU.correct();HAPTIC(22);sparkleAt(i);render();renderHud();if(G.found>=G.total)setTimeout(levelWin,320);}
-  else{G.hearts--;AU.wrong();HAPTIC([40,30,40]);flashWrong(i);renderHud();toast('No pup belongs there');if(G.hearts<=0)setTimeout(levelLose,420);}}
+  if(G.sol.has(i)){placeDog(i);AU.woof();HAPTIC(22);sparkleAt(i);render();renderHud();if(G.found>=G.total)setTimeout(levelWin,320);}
+  else{G.hearts--;AU.growl();HAPTIC([50,40,50]);flashWrong(i);renderHud();toast('No pup belongs there');if(G.hearts<=0)setTimeout(levelLose,420);}}
 function flashWrong(i){const el=boardEl.children[i];if(!el)return;el.classList.remove('wrong');void el.offsetWidth;el.classList.add('wrong');}
-function sparkleAt(i){const el=boardEl.children[i];if(!el)return;const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cols=['#f5c542','#ff8fb0','#8ed3c6','#ffffff'];
-  for(let k=0;k<9;k++){const p=document.createElement('div');p.style.cssText=`position:fixed;z-index:58;left:${cx}px;top:${cy}px;width:8px;height:8px;border-radius:50%;pointer-events:none;background:${cols[k%cols.length]};`;document.body.appendChild(p);
-    const ang=Math.random()*6.28,dist=22+Math.random()*36;p.animate([{transform:'translate(-50%,-50%) scale(1)',opacity:1},{transform:`translate(calc(-50% + ${Math.cos(ang)*dist}px),calc(-50% + ${Math.sin(ang)*dist}px)) scale(0)`,opacity:0}],{duration:450+Math.random()*250,easing:'cubic-bezier(.2,.7,.3,1)'}).onfinish=()=>p.remove();}}
+function sparkleAt(i){const el=boardEl.children[i];if(!el)return;const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,sz=Math.max(r.width,36),cols=['#f5c542','#ff8fb0','#8ed3c6','#ffffff','#9b7bff'];
+  // expanding ring
+  const ring=document.createElement('div');ring.className='findring';ring.style.cssText=`position:fixed;z-index:56;left:${cx}px;top:${cy}px;width:${sz}px;height:${sz}px;border-radius:50%;border:4px solid var(--good);pointer-events:none;`;document.body.appendChild(ring);
+  ring.animate([{transform:'translate(-50%,-50%) scale(.4)',opacity:.9},{transform:'translate(-50%,-50%) scale(1.7)',opacity:0}],{duration:450,easing:'ease-out'}).onfinish=()=>ring.remove();
+  for(let k=0;k<14;k++){const p=document.createElement('div');const s=6+Math.random()*6;p.style.cssText=`position:fixed;z-index:58;left:${cx}px;top:${cy}px;width:${s}px;height:${s}px;border-radius:50%;pointer-events:none;background:${cols[k%cols.length]};`;document.body.appendChild(p);
+    const ang=Math.random()*6.28,dist=26+Math.random()*48;p.animate([{transform:'translate(-50%,-50%) scale(1)',opacity:1},{transform:`translate(calc(-50% + ${Math.cos(ang)*dist}px),calc(-50% + ${Math.sin(ang)*dist}px)) scale(0)`,opacity:0}],{duration:480+Math.random()*300,easing:'cubic-bezier(.2,.7,.3,1)'}).onfinish=()=>p.remove();}}
 function buildBoard(){const N=G.N;boardEl.classList.toggle('golden',!!G.isGolden);
   const wrap=boardEl.parentElement;let ban=wrap.querySelector('.gold-banner');
   if(G.isGolden){if(!ban){ban=document.createElement('div');ban.className='gold-banner';wrap.insertBefore(ban,boardEl);}ban.innerHTML=`${ICON.bone('#9a6a00')} Golden Bone Level — no pups shown!`;ban.querySelectorAll('svg').forEach(s=>{s.style.width='22px';s.style.height='22px';});}
@@ -718,7 +758,7 @@ function renderCell(i){const cell=boardEl.children[i];if(!cell)return;cell.class
   else if(G.x[i]){cell.innerHTML=`<span class="x">${ICON.cross('#ffffff')}</span>`;}}
 function render(){for(let i=0;i<G.N*G.N;i++)renderCell(i);}
 function renderHud(){const h=$('#hearts');h.innerHTML='';for(let k=0;k<G.cfg.hearts;k++)h.innerHTML+=ICON.heart(k<G.hearts?'#ef6b55':'var(--line-strong)',k<G.hearts);
-  $('#foundTxt').textContent=`${G.found}/${G.total}`;$('#gLvl').textContent=G.isDaily?'Daily':'Lv '+G.n;$('#hintBadge').textContent=G.hints;$('#hintBadge').style.display=G.hints>0?'':'none';}
+  $('#foundTxt').textContent=`${G.found}/${G.total}`;$('#gLvl').textContent=G.isDaily?'Daily':'Lv '+G.n;{const tot=G.hints+(meta.sniffs||0);$('#hintBadge').textContent=tot;$('#hintBadge').style.display=tot>0?'':'none';}}
 function wireCell(cell,i){let last=0,prevX=false;
   cell.addEventListener('click',()=>{
     if(!G||G.placed[i])return;
@@ -726,13 +766,16 @@ function wireCell(cell,i){let last=0,prevX=false;
     if(dt<=400){ last=0; G.x[i]=prevX; onDouble(i); renderCell(i); }   // second tap within 400ms → place a pup
     else { last=now; prevX=G.x[i]; onSingle(i); }                      // first tap → instant X mark
   });}
-function hint(){if(!G)return;if(G.hints<=0){AU.wrong();toast('No sniffs left');return;}const left=[...G.sol].filter(c=>!G.placed[c]);if(left.length<=1){toast('You can do the last one!');return;}G.hints--;const c=left[Math.floor(Math.random()*left.length)];placeDog(c);AU.correct();HAPTIC(20);sparkleAt(c);render();renderHud();if(G.found>=G.total)setTimeout(levelWin,320);}
+function hint(){if(!G)return;const left=[...G.sol].filter(c=>!G.placed[c]);if(left.length<=1){toast('You can do the last one!');return;}
+  if(G.hints>0)G.hints--;else if((meta.sniffs||0)>0){meta.sniffs--;saveMeta();}else{AU.wrong();toast('No sniffs left — buy more in the Shop');return;}
+  const c=left[Math.floor(Math.random()*left.length)];placeDog(c);AU.woof();HAPTIC(20);sparkleAt(c);render();renderHud();if(G.found>=G.total)setTimeout(levelWin,320);}
 function clearX(){if(!G)return;for(let i=0;i<G.N*G.N;i++)if(!G.placed[i])G.x[i]=false;render();}
 
 function starRowHTML(stars){return `<div style="display:flex;justify-content:center;align-items:flex-end;gap:12px;margin:0 0 12px">${[1,2,3].map(i=>`<span style="width:${i===2?44:36}px;height:${i===2?44:36}px;display:inline-block;${i<=stars?'filter:drop-shadow(0 2px 5px rgba(245,197,66,.55))':'opacity:.35'}">${ICON.star(i<=stars?'#f5c542':'#c9b48c')}</span>`).join('')}</div>`;}
 function levelWin(){
   AU.win();HAPTIC([30,40,70]);confetti();
   const mistakes=G.cfg.hearts-G.hearts, stars=Math.max(1,3-mistakes);
+  gainXP(15+stars*5+(G.isGolden?25:0)+(G.isDaily?15:0));try{pushLeaderboard();}catch(e){}
   const dog=dogById(meta.active)||DOGS[0];
   if(G.isDaily){
     const today=dstr(),fresh=meta.lastDaily!==today;
@@ -784,6 +827,7 @@ function crateIll(crate,size){const [a,b]=crate.ill;return `<span style="display
 function renderShop(){
   $('#coinNum2').textContent=meta.coins;renderBoostBanner('#shopBoost');
   const list=$('#shopList');list.innerHTML='';
+  const ct=document.createElement('div');ct.className='sec-title';ct.innerHTML='<span class="line"></span>Crates<span class="line"></span>';list.appendChild(ct);
   for(const id in CRATES){const cr=CRATES[id];
     const tierColor=cr.tier==='Basic'?'#9aa7b4':cr.tier==='Mythic'?'#ff4d6d':'#f5a623';
     const odds=Object.entries(cr.weights).filter(([,w])=>w>0).map(([k,w])=>`${RARITY[k].label} ${w}%`).join(' · ');
@@ -798,9 +842,21 @@ function renderShop(){
       </div>`;
     list.appendChild(card);
   }
+  const bt=document.createElement('div');bt.className='sec-title';bt.style.marginTop='18px';bt.innerHTML='<span class="line"></span>Boosts<span class="line"></span>';list.appendChild(bt);
+  const sn=document.createElement('div');sn.className='shop-card';
+  sn.innerHTML=`<div class="crate-ill">${ICON.nose('#f6a63f')}</div><div class="nm">Sniffs <span style="color:var(--ink-soft);font-size:12px;font-weight:600">(owned ${meta.sniffs||0})</span></div><div class="odds">Reveal a correct pup during any level</div>
+    <div class="buyrow"><button class="btn btn-ghost" id="buySniff1"><span class="price">${ICON.coin()} 50</span>&nbsp;x1</button><button class="btn btn-primary" id="buySniff5"><span class="price">${ICON.coin()} 200</span>&nbsp;x5</button></div>`;
+  list.appendChild(sn);
+  const po=document.createElement('div');po.className='shop-card';
+  po.innerHTML=`<div class="crate-ill">${ICON.bolt('#f6a63f')}</div><div class="nm">2× Coins Potion</div><div class="odds">Double every coin you earn for 1 hour</div>
+    <div class="buyrow"><button class="btn btn-primary" id="buyPotion" style="flex:1"><span class="price">${ICON.coin()} 250</span>&nbsp;— 1 hour</button></div>`;
+  list.appendChild(po);
   list.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>buyCrate(b.dataset.buy,false));
   list.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>buyCrate(b.dataset.open,true));
+  $('#buySniff1').onclick=()=>buySniff(1,50);$('#buySniff5').onclick=()=>buySniff(5,200);$('#buyPotion').onclick=buyPotion;
 }
+function buySniff(n,price){if(meta.coins<price){toast('Not enough coins');return;}meta.coins-=price;meta.sniffs=(meta.sniffs||0)+n;saveMeta();AU.coin();toast('+'+n+' sniff'+(n>1?'s':''));renderShop();updateCoins();}
+function buyPotion(){const price=250;if(meta.coins<price){toast('Not enough coins');return;}meta.coins-=price;meta.boostUntil=Math.max(meta.boostUntil,Date.now())+3600*1000;saveMeta();AU.coin();toast('2× coins for 1 hour!');renderShop();updateCoins();}
 function buyCrate(id,openNow){
   const cr=CRATES[id];
   if(meta.coins<cr.price){toast('Not enough coins');return;}
@@ -896,7 +952,18 @@ function emitCineFX(dog,rar,dur){
 }
 
 /* ---------- Bag ---------- */
-let bagTab='dogs',renameMode=false;
+let bagTab='dogs',renameMode=false,sellMode=false;
+const SELL={common:40,uncommon:80,rare:150,epic:300,legendary:600,mythic:900,secret:2000};
+function confirmSell(id){
+  const d=dogById(id);if(!d)return;const price=SELL[d.rarity]||50;
+  if(meta.dogs.length<=1){toast("Can't sell your last pup");return;}
+  modal({art:dogSVG(d),title:`Sell ${dogName(id)}?`,text:`You'll get ${price} coins. This pup leaves your pack for good.`,
+    buttons:[{label:`Sell for ${price}`,primary:true,act:()=>{
+      meta.dogs=meta.dogs.filter(x=>x!==id);if(meta.dogNames)delete meta.dogNames[id];meta.coins+=price;
+      if(meta.active===id){meta.active=meta.dogs[0];applyTheme((dogById(meta.active)||{}).theme||'default');}
+      saveMeta();AU.coin();closeModal();toast('Sold for '+price+' coins');sellMode=false;renderBag();
+    }},{label:'Cancel',act:closeModal}]});
+}
 function renderBag(){
   updateCoins();
   const ndogs=meta.dogs.length,ncrates=Object.values(meta.crates).reduce((a,b)=>a+b,0),gb=meta.goldenBones||0;
@@ -904,22 +971,29 @@ function renderBag(){
   $('#tabDogs').classList.toggle('on',bagTab==='dogs');$('#tabCrates').classList.toggle('on',bagTab==='crates');
   const grid=$('#bagGrid');grid.innerHTML='';
   if(bagTab==='dogs'){
+    const order={secret:7,mythic:6,legendary:5,epic:4,rare:3,uncommon:2,common:1};
+    const owned=DOGS.filter(d=>meta.dogs.includes(d.id)).sort((a,b)=>order[b.rarity]-order[a.rarity]);
     if((meta.goldenBones||0)>0){
       const rb=document.createElement('button');rb.className='btn '+(renameMode?'btn-primary':'btn-ghost');rb.style.cssText='grid-column:1/-1;width:100%';
       rb.innerHTML=`<span style="width:20px;height:20px;display:inline-flex">${ICON.bone(renameMode?'#3a2000':'#9a5400')}</span> ${renameMode?'Tap a pup to rename it':'Rename a pup ('+meta.goldenBones+' golden bone'+(meta.goldenBones>1?'s':'')+')'}`;
-      rb.onclick=()=>{AU.button();renameMode=!renameMode;renderBag();};
+      rb.onclick=()=>{AU.button();renameMode=!renameMode;sellMode=false;renderBag();};
       grid.appendChild(rb);
     } else renameMode=false;
-    const order={secret:6,mythic:5,legendary:4,epic:3,rare:2,common:1};
-    const owned=DOGS.filter(d=>meta.dogs.includes(d.id)).sort((a,b)=>order[b.rarity]-order[a.rarity]);
+    if(owned.length>1){
+      const sb=document.createElement('button');sb.className='btn '+(sellMode?'btn-primary':'btn-ghost');sb.style.cssText='grid-column:1/-1;width:100%';
+      sb.textContent=sellMode?'Tap a pup to sell it':'Sell a pup for coins';
+      sb.onclick=()=>{AU.button();sellMode=!sellMode;renameMode=false;renderBag();};
+      grid.appendChild(sb);
+    } else sellMode=false;
     for(const d of owned){
       const active=meta.active===d.id,isSecret=d.rarity==='secret';
-      const el=document.createElement('div');el.className='bag-card'+(active?' active':'')+(renameMode?' renaming':'');
+      const el=document.createElement('div');el.className='bag-card'+(active?' active':'')+(renameMode?' renaming':'')+(sellMode?' selling':'');
+      const metaTxt=renameMode?'Tap to rename':sellMode?('Sell · '+(SELL[d.rarity]||50)):(d.theme?'Theme pup':'Tap to equip');
       el.innerHTML=`${isSecret?'<div class="aura"></div>':''}
         <span class="rar" style="background:${RARITY[d.rarity].color}22;color:${RARITY[d.rarity].color}">${RARITY[d.rarity].label}</span>
         ${active?'<span class="eq">On</span>':''}
-        ${dogSVG(d)}<div class="nm">${dogName(d.id)}</div><div class="meta">${renameMode?'Tap to rename':(d.theme?'Theme pup':'Tap to equip')}</div>`;
-      el.onclick=()=>{if(renameMode){renameMode=false;openRename(d.id);return;}meta.active=d.id;saveMeta();applyTheme(d.theme||'default');renderBag();toast(dogName(d.id)+' equipped!');};
+        ${dogSVG(d)}<div class="nm">${dogName(d.id)}</div><div class="meta">${metaTxt}</div>`;
+      el.onclick=()=>{if(renameMode){renameMode=false;openRename(d.id);return;}if(sellMode){confirmSell(d.id);return;}meta.active=d.id;saveMeta();applyTheme(d.theme||'default');renderBag();toast(dogName(d.id)+' equipped!');};
       grid.appendChild(el);
     }
   } else {
@@ -979,7 +1053,7 @@ function renderBoostBanner(sel){const el=$(sel);if(!el)return;
   else el.classList.add('hidden');}
 
 /* ---------- Home / nav ---------- */
-function updateCoins(){['#coinNum','#coinNum2','#coinNum3','#coinNum4'].forEach(s=>{const e=$(s);if(e)e.textContent=meta.coins;});}
+function updateCoins(){['#coinNum','#coinNum2','#coinNum3','#coinNum4','#coinNum5'].forEach(s=>{const e=$(s);if(e)e.textContent=meta.coins;});}
 function renderHome(){
   const dog=dogById(meta.active)||DOGS[0];$('#mascot').innerHTML=dogSVG(dog);
   const cfg=levelConfig(meta.level);$('#homeLvl').textContent=meta.level;$('#homeLvlName').textContent=cfg.name;
@@ -992,8 +1066,73 @@ function renderHome(){
 function showScreen(name){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===name));
   document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.screen===name));
   if(name!=='game')$('#nav').classList.remove('hidden');
-  if(name==='home')renderHome();if(name==='shop')renderShop();if(name==='bag')renderBag();if(name==='quests')renderQuests();}
+  if(name==='home')renderHome();if(name==='shop')renderShop();if(name==='bag')renderBag();if(name==='quests')renderQuests();if(name==='profile')renderProfile();}
 function goHome(){$('#nav').classList.remove('hidden');showScreen('home');}
+
+/* ---------- Profile / XP / Leaderboard / Admin ---------- */
+const ADMIN_EMAIL='zortmanaidan@gmail.com';
+let liveEvent={mult:1,until:0};
+function isAdmin(){return !!(CLOUD.user && (CLOUD.user.email||'').toLowerCase()===ADMIN_EMAIL);}
+function profDisplayName(){return meta.profileName||(CLOUD.user&&(CLOUD.user.displayName||CLOUD.user.email))||'Player';}
+function renderProfile(){
+  updateCoins();
+  const dog=dogById(meta.active)||DOGS[0];$('#profAvatar').innerHTML=dogSVG(dog);
+  $('#profName').textContent=profDisplayName();
+  const pl=playerLevel(meta.xp||0);
+  $('#profLvl').textContent='Level '+pl.level;$('#profXpBar').style.width=Math.min(100,pl.into/pl.need*100)+'%';$('#profXpTxt').textContent=`${pl.into} / ${pl.need} XP`;
+  $('#profStats').innerHTML=[['Levels cleared',meta.cleared],['Pups',meta.dogs.length],['Daily streak',meta.streak||0],['Golden bones',meta.goldenBones||0]].map(([l,v])=>`<div class="stat-box"><div class="big">${v}</div><div class="lbl">${l}</div></div>`).join('');
+  $('#profAdmin').style.display=isAdmin()?'':'none';
+}
+function openNameEdit(){
+  const root=$('#modal-root');const cur=profDisplayName().replace(/"/g,'');
+  root.innerHTML=`<div class="modal"><h2>Change name</h2><p>This is the name shown on the leaderboard.</p>
+    <input id="nameInput" maxlength="16" value="${cur}" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:'Fredoka',inherit;font-size:17px;font-weight:700;text-align:center;margin-bottom:12px"/>
+    <button class="btn btn-primary" id="nameSave">Save</button><button class="btn btn-ghost" id="nameCancel" style="margin-top:10px">Cancel</button></div>`;
+  root.classList.add('show');const inp=$('#nameInput');setTimeout(()=>{try{inp.focus();inp.select();}catch(e){}},60);
+  $('#nameSave').onclick=()=>{const v=(inp.value||'').replace(/[<>]/g,'').trim().slice(0,16);if(!v){toast('Enter a name');return;}meta.profileName=v;saveMeta();AU.coin();closeModal();toast('Name set to '+v);renderProfile();pushLeaderboard();};
+  $('#nameCancel').onclick=()=>{AU.button();closeModal();};
+}
+async function pushLeaderboard(){ if(!CLOUD.avail()||!CLOUD.user)return; try{const pl=playerLevel(meta.xp||0);await CLOUD.fs().setDocument({reference:`leaderboard/${CLOUD.user.uid}`,data:{name:profDisplayName(),xp:meta.xp||0,level:pl.level,cleared:meta.cleared||0,updated:Date.now()}});}catch(e){} }
+async function openLeaderboard(){
+  if(!CLOUD.avail()||!CLOUD.user){toast('Leaderboard works in the app when signed in');return;}
+  const root=$('#modal-root');root.innerHTML=`<div class="modal"><h2>Leaderboard</h2><p id="lbMsg">Loading…</p><div id="lbList"></div><button class="btn btn-primary" id="lbClose" style="margin-top:12px">Close</button></div>`;root.classList.add('show');$('#lbClose').onclick=closeModal;
+  try{
+    const r=await CLOUD.fs().getCollection({reference:'leaderboard',compositeFilter:undefined,queryConstraints:[{type:'orderBy',fieldPath:'xp',directionStr:'desc'},{type:'limit',limit:25}]});
+    const rows=(r.snapshots||[]).map(s=>s.data||s);
+    $('#lbMsg').textContent=rows.length?'Top players by XP':'No players yet — be the first!';
+    $('#lbList').innerHTML=rows.map((d,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:9px 2px;border-bottom:1px solid var(--line)"><b style="width:26px;color:var(--accent-ink)">${i+1}</b><span style="flex:1;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${(d.name||'Player').replace(/[<>]/g,'')}</span><span style="color:var(--ink-soft);font-size:13px">Lv ${d.level||1}</span><span style="font-weight:800;color:var(--accent-ink);min-width:54px;text-align:right">${d.xp||0} xp</span></div>`).join('');
+  }catch(e){$('#lbMsg').textContent='Could not load leaderboard.';}
+}
+function openAdmin(){
+  if(!isAdmin()){toast('Admins only');return;}
+  const root=$('#modal-root');
+  root.innerHTML=`<div class="modal" style="text-align:left"><h2 style="text-align:center">Admin Panel</h2>
+    <div style="display:flex;gap:8px;margin:8px 0"><input id="adCoins" type="number" value="${meta.coins}" style="flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:700"/><button class="btn btn-primary" id="adSetCoins" style="padding:10px 14px">Set coins</button></div>
+    <button class="btn btn-ghost" id="adAllPets" style="width:100%;margin-bottom:8px">Unlock all pups</button>
+    <button class="btn btn-ghost" id="adBones" style="width:100%;margin-bottom:8px">+10 golden bones</button>
+    <button class="btn btn-ghost" id="adXp" style="width:100%;margin-bottom:8px">+1000 XP</button>
+    <button class="btn btn-ghost" id="adRain" style="width:100%;margin-bottom:8px">Coin rain (+1000)</button>
+    <div style="display:flex;gap:8px;margin-bottom:8px"><button class="btn btn-ghost" id="adE2" style="flex:1">2× event</button><button class="btn btn-ghost" id="adE3" style="flex:1">3× event</button><button class="btn btn-ghost" id="adE5" style="flex:1">5× event</button></div>
+    <button class="btn btn-primary" id="adClose" style="width:100%;margin-top:6px">Done</button></div>`;
+  root.classList.add('show');
+  $('#adSetCoins').onclick=()=>{meta.coins=Math.max(0,parseInt($('#adCoins').value)||0);saveMeta();updateCoins();toast('Coins set');};
+  $('#adAllPets').onclick=()=>{meta.dogs=DOGS.map(d=>d.id);saveMeta();toast('All pups unlocked');};
+  $('#adBones').onclick=()=>{meta.goldenBones=(meta.goldenBones||0)+10;saveMeta();toast('+10 golden bones');};
+  $('#adXp').onclick=()=>{gainXP(1000);renderProfile();toast('+1000 XP');};
+  $('#adRain').onclick=()=>{coinRain();meta.coins+=1000;saveMeta();updateCoins();};
+  $('#adE2').onclick=()=>startEvent(2);$('#adE3').onclick=()=>startEvent(3);$('#adE5').onclick=()=>startEvent(5);
+  $('#adClose').onclick=()=>{AU.button();closeModal();};
+}
+async function startEvent(mult){
+  meta.eventMult=mult;meta.eventUntil=Date.now()+3600*1000;saveMeta();
+  liveEvent={mult,until:meta.eventUntil};
+  toast(mult+'× coin event started (1h)');confetti();
+  if(CLOUD.avail()&&CLOUD.user){try{await CLOUD.fs().setDocument({reference:'config/event',data:{mult,until:meta.eventUntil,by:profDisplayName()}});}catch(e){}}
+}
+function coinRain(){AU.coin();const cols=['#f5c542','#ffd98a'];for(let i=0;i<40;i++){const c=document.createElement('div');c.className='coinfly';c.style.cssText='position:fixed;z-index:85;width:28px;height:28px;pointer-events:none;';c.innerHTML=ICON.coin();document.body.appendChild(c);
+  const x=Math.random()*innerWidth;c.style.left=x+'px';c.style.top='-30px';
+  c.animate([{transform:'translateY(0) rotate(0)',opacity:1},{transform:`translateY(${innerHeight+60}px) rotate(${Math.random()*720}deg)`,opacity:.95}],{duration:1400+Math.random()*1200,delay:Math.random()*900,easing:'cubic-bezier(.3,.5,.5,1)'}).onfinish=()=>c.remove();}}
+async function readLiveEvent(){ if(!CLOUD.avail()||!CLOUD.user)return; try{const r=await CLOUD.fs().getDocument({reference:'config/event'});const d=r&&r.snapshot&&(r.snapshot.data||r.snapshot);if(d&&d.until>Date.now())liveEvent={mult:d.mult||1,until:d.until};}catch(e){} }
 function openSettings(){
   AU.button();
   const row=(label,key,icon)=>`<div class="setrow" data-key="${key}"><span class="si">${icon}</span><span class="sl">${label}</span><span class="sw ${meta[key]!==false?'on':''}"><i></i></span></div>`;
@@ -1067,7 +1206,8 @@ function paintStatic(){
   $('#gearBtn').innerHTML=ICON.gear();$('#dailyCalIcon').innerHTML=ICON.calendar('#9a5400');$('#dailyPlayIcon').innerHTML=ICON.play('#9a5400');
   $('#backBtn').innerHTML=ICON.back();$('#restartBtn').innerHTML=ICON.refresh();
   $('#hintIcon').innerHTML=ICON.nose();$('#helpIcon').innerHTML=ICON.help();$('#pawSmall').innerHTML=ICON.paw('var(--accent-ink)');
-  $('#navHome').innerHTML=ICON.home();$('#navShop').innerHTML=ICON.shop();$('#navBag').innerHTML=ICON.bag();$('#navQuest').innerHTML=ICON.quest();
+  $('#navHome').innerHTML=ICON.home();$('#navShop').innerHTML=ICON.shop();$('#navBag').innerHTML=ICON.bag();$('#navQuest').innerHTML=ICON.quest();$('#navProfile').innerHTML=ICON.person();
+  $('#profLogo').innerHTML=ICON.person('#f6a63f');$('#coinIcon5').innerHTML=ICON.coin();$('#trophyIcon').innerHTML=ICON.trophy('#3a2000');
   $('#loaderPaw').innerHTML=ICON.paw('var(--accent)');
 }
 function wire(){
@@ -1079,6 +1219,7 @@ function wire(){
   $('#backBtn').onclick=()=>{AU.button();goHome();};$('#restartBtn').onclick=()=>{AU.button();if(G)startLevel(G.n);};
   $('#cHint').onclick=hint;
   $('#tabDogs').onclick=()=>{AU.button();bagTab='dogs';renderBag();};$('#tabCrates').onclick=()=>{AU.button();bagTab='crates';renderBag();};
+  $('#profNameBtn').onclick=()=>{AU.button();openNameEdit();};$('#profLeaderboard').onclick=()=>{AU.button();openLeaderboard();};$('#profAdmin').onclick=()=>{AU.button();openAdmin();};
   $('#resetBtn').onclick=()=>modal({title:'Reset everything?',text:'Clears coins, pups, crates, levels and quests.',
     buttons:[{label:'Reset',primary:true,act:()=>{localStorage.removeItem(META_KEY);meta=loadMeta();G=null;applyTheme('default');closeModal();toast('Progress reset');goHome();refreshQuestDot();}},{label:'Cancel',act:closeModal}]});
   document.addEventListener('pointerdown',()=>{AU.ensure();AU.resume();if(meta.music!==false)AU.startMusic();},{once:true});
@@ -1110,6 +1251,7 @@ const CLOUD={
       if(data&&data.meta){mergeMeta(data.meta);saveMeta();applyTheme((dogById(meta.active)||{}).theme||'default');renderHome();refreshQuestDot();}
     }catch(e){}
     this.push(true);
+    try{readLiveEvent();pushLeaderboard();}catch(e){}
   },
   _t:null,
   push(now){const ref=this.ref();if(!ref)return;clearTimeout(this._t);
@@ -1127,6 +1269,8 @@ function mergeMeta(c){if(!c)return;
   meta.stars=Object.assign({},c.stars||{},meta.stars||{});
   meta.goldenBones=mx(meta.goldenBones,c.goldenBones);
   meta.dogNames=Object.assign({},c.dogNames||{},meta.dogNames||{});
+  meta.sniffs=mx(meta.sniffs,c.sniffs);meta.xp=mx(meta.xp,c.xp);
+  if(!meta.profileName&&c.profileName)meta.profileName=c.profileName;
   if(c.lastDaily&&(!meta.lastDaily||c.lastDaily>meta.lastDaily))meta.lastDaily=c.lastDaily;
   if(c.tutorialDone)meta.tutorialDone=true;
 }
@@ -1140,7 +1284,7 @@ function wireAuthBtn(){const b=$('#authBtn');if(!b)return;b.onclick=()=>{AU.butt
 function updateAuthUI(){const box=$('#authBox');if(box){box.innerHTML=authBoxHTML();wireAuthBtn();}}
 
 /* ---------- Version / update check (GitHub) ---------- */
-const APP_VERSION='1.2.0',APP_VERSION_CODE=3;
+const APP_VERSION='1.3.0',APP_VERSION_CODE=4;
 const GH_REPO='zortman/PupSpot';
 const VERSION_URL=`https://raw.githubusercontent.com/${GH_REPO}/main/version.json`;
 const RELEASES_URL=`https://github.com/${GH_REPO}/releases/latest`;
